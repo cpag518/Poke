@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#cc0000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PokéSniper">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>PokéSniper</title>
+<style>
+:root{color-scheme:dark;--bg:#101114;--panel:#1b1d22;--muted:#a7aab3;--red:#e1262f;--line:#30333b;--green:#55d68b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom))}
+header{padding:24px 2px 18px;display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(145deg,#f34248,#a90008);display:grid;place-items:center;font-size:27px;box-shadow:0 8px 24px #d11c2c55}h1{font-size:25px;margin:0;font-weight:850;letter-spacing:-.7px}.sub{color:var(--muted);font-size:12px;margin-top:3px}
+.hero{background:linear-gradient(135deg,#292c34,#191b20);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px}.hero-top{display:flex;justify-content:space-between;align-items:center}.eyebrow{font-size:11px;color:#ff9297;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}.hero h2{font-size:22px;margin:9px 0 5px}.hero p{font-size:13px;line-height:1.45;color:var(--muted);margin:0 0 14px}.pill{font-size:11px;padding:6px 9px;border-radius:30px;background:#343740;color:#d8d9de}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#10121688;border-radius:12px;padding:11px}.stat b{display:block;font-size:21px}.stat span{color:var(--muted);font-size:11px}
+.actions{display:flex;gap:9px;margin:14px 0 20px}.btn{border:0;border-radius:12px;padding:13px 15px;font-weight:750;font-size:13px;cursor:pointer}.primary{background:var(--red);color:white;flex:1}.secondary{background:#2b2e35;color:white;border:1px solid #41444d}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}.section-head h3{font-size:16px;margin:0}.small{font-size:11px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}.product-head{display:flex;gap:10px;align-items:flex-start}.ball{width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:#30333b;display:grid;place-items:center;font-size:22px}.product-name{font-weight:750;font-size:14px;line-height:1.35}.url{font-size:11px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}.status{font-size:10px;font-weight:800;border-radius:30px;padding:6px 8px;white-space:nowrap;background:#30333b;color:#c4c6cd}.status.in{background:#123a29;color:#77efac}.product-actions{display:flex;gap:8px;margin-top:12px}.product-actions button{flex:1;padding:10px 8px;font-size:11px}.danger{background:transparent;color:#ff9ba0;border:1px solid #63343a}
+.empty{text-align:center;padding:25px 16px;color:var(--muted);font-size:13px;line-height:1.5}.note{font-size:11px;line-height:1.5;color:var(--muted);background:#1a1c21;border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:16px}
+label{font-size:12px;color:#c9cbd2;display:block;margin:12px 0 6px}input{width:100%;background:#101216;border:1px solid #3a3d46;border-radius:11px;color:white;padding:13px;font-size:14px;outline:none}input:focus{border-color:#ef555c}.modal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:5}.modal.show{display:flex}.sheet{background:#202229;border:1px solid #41444d;border-radius:20px;padding:18px;width:min(100%,520px);padding-bottom:calc(18px + env(safe-area-inset-bottom))}.sheet h3{margin:0 0 8px}.sheet .actions{margin-bottom:0}.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:16px;right:16px;background:#32353d;padding:13px;border-radius:12px;text-align:center;font-size:13px;display:none;z-index:8}.toast.show{display:block}
+footer{text-align:center;color:#747781;font-size:10px;padding:22px 0 5px}
+</style>
+</head>
+<body>
+<header><div class="logo">⚡</div><div><h1>PokéSniper</h1><div class="sub">Pokémon restock watchlist · Target</div></div></header>
+<section class="hero">
+ <div class="hero-top"><span class="eyebrow">Your hunt starts here</span><span class="pill" id="monitorPill">MANUAL MODE</span></div>
+ <h2>Never lose track of a drop.</h2>
+ <p>Keep your Pokémon products in one place. Open the Target listing to verify live availability and complete checkout yourself.</p>
+ <div class="stats"><div class="stat"><b id="totalCount">0</b><span>Products watched</span></div><div class="stat"><b id="stockCount">0</b><span>Marked in stock</span></div></div>
+</section>
+<div class="actions"><button class="btn primary" id="addBtn">＋ Add product</button><button class="btn secondary" id="installBtn" hidden>Install app</button></div>
+<div class="section-head"><h3>My watchlist</h3><span class="small" id="updatedLabel">Saved on this iPhone</span></div>
+<div id="products"></div>
+<div class="note"><b>How stock checking works:</b> This free version saves your watchlist on this iPhone. It does not query Target automatically. Use “Check at Target” to verify the listing, then update its status here. Background restock alerts require a permitted inventory feed and a cloud notification service.</div>
+<footer>PokéSniper · Independent fan-made tool · Not affiliated with Target or The Pokémon Company</footer>
+
+<div class="modal" id="modal"><div class="sheet">
+<h3>Add a Pokémon product</h3>
+<label for="pname">Product name</label><input id="pname" placeholder="e.g. Pokémon ETB — set name">
+<label for="purl">Target product URL</label><input id="purl" type="url" placeholder="https://www.target.com/p/...">
+<div class="actions"><button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn primary" id="saveBtn">Save product</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY="pokesniper.products.v1";
+let products=[];
+const $=id=>document.getElementById(id);
+function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2600)}
+function load(){try{products=JSON.parse(localStorage.getItem(KEY)||"[]")}catch{products=[]}render()}
+function save(){localStorage.setItem(KEY,JSON.stringify(products));render()}
+function validTargetURL(raw){try{const u=new URL(raw);return u.protocol==="https:" && (u.hostname==="target.com"||u.hostname.endsWith(".target.com"))}catch{return false}}
+function render(){
+ $("totalCount").textContent=products.length;
+ $("stockCount").textContent=products.filter(p=>p.stock==="in").length;
+ $("products").innerHTML="";
+ if(!products.length){$("products").innerHTML='<div class="card empty">No products yet.<br>Tap <b>Add product</b> to start your Pokémon watchlist.</div>';return}
+ products.forEach(p=>{
+  const card=document.createElement("div");card.className="card";
+  const head=document.createElement("div");head.className="product-head";
+  const ball=document.createElement("div");ball.className="ball";ball.textContent="🎴";
+  const info=document.createElement("div");info.style.flex="1";
+  const name=document.createElement("div");name.className="product-name";name.textContent=p.name;
+  const url=document.createElement("div");url.className="url";url.textContent=new URL(p.url).hostname;
+  info.append(name,url);
+  const status=document.createElement("span");status.className="status"+(p.stock==="in"?" in":"");status.textContent=p.stock==="in"?"IN STOCK*":"NOT VERIFIED";
+  head.append(ball,info,status);card.append(head);
+  const actions=document.createElement("div");actions.className="product-actions";
+  const check=document.createElement("button");check.className="btn primary";check.textContent="Check at Target ↗";check.onclick=()=>window.open(p.url,"_blank","noopener");
+  const mark=document.createElement("button");mark.className="btn secondary";mark.textContent=p.stock==="in"?"Mark unavailable":"Mark in stock";mark.onclick=()=>{p.stock=p.stock==="in"?"unknown":"in";save();if(p.stock==="in")notify(p.name)};
+  const del=document.createElement("button");del.className="btn danger";del.textContent="Remove";del.onclick=()=>{products=products.filter(x=>x.id!==p.id);save()};
+  actions.append(check,mark,del);card.append(actions);
+  const disclaimer=document.createElement("div");disclaimer.className="small";disclaimer.style.marginTop="9px";disclaimer.textContent="*Manually marked by you — not verified by PokéSniper.";card.append(disclaimer);
+  $("products").append(card);
+ });
+}
+function notify(name){
+ toast(name+" marked in stock. Verify availability at Target.");
+}
+$("addBtn").onclick=()=>{$("modal").classList.add("show");$("pname").focus()};
+$("cancelBtn").onclick=()=>$("modal").classList.remove("show");
+$("saveBtn").onclick=()=>{
+ const name=$("pname").value.trim(),url=$("purl").value.trim();
+ if(!name){toast("Enter a product name.");return}
+ if(!validTargetURL(url)){toast("Enter a valid https://www.target.com product URL.");return}
+ products.unshift({id:crypto.randomUUID(),name,url,stock:"unknown",added:new Date().toISOString()});
+ $("pname").value="";$("purl").value="";$("modal").classList.remove("show");save();toast("Product added to your watchlist.");
+};
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").hidden=false});
+$("installBtn").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null}else toast('In Safari, use Share → Add to Home Screen.')};
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+load();
+</script>
+</body></html>
